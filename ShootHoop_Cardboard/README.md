@@ -1,3 +1,3 @@
+ShootHoop
 
-
-The player can shoot baskets at 5 different targets.  The game is from the Udemy VR Course by Ben Tristem.  The course setup the game in Desktop and then added Oculus functionality.  After the course
+Shoot Hoop is an Android Unity VR basketball style game with 5 backboards based on a project from the Udemy VR Course.  The Player can shoot baskets at 5 different targets.  The course setup the game in Desktop and then added Oculus functionality.  I added functionality to GoogleVR 1.5 on Unity 5.6.
