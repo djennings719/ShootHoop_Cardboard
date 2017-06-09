@@ -5,16 +5,10 @@ using UnityEngine.UI;
 
 public class ScoreKeeper : MonoBehaviour {
 
-    public int score = 0;
+    //public int score = 0;
     AudioSource audio;
-
-    //public int Score
-    //{
-    //    get { return score; }
-    //    set {
-    //        score = value;
-    //    }
-    //}
+    DataController data;
+    public int score;
 
     void Awake()
     {
@@ -23,6 +17,7 @@ public class ScoreKeeper : MonoBehaviour {
 
     private void Start()
     {
+        data = FindObjectOfType<DataController>();
         audio = GetComponent<AudioSource>();
     }
 
