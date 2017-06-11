@@ -7,11 +7,12 @@ public class LevelManager : MonoBehaviour {
 
     public float timeToNextLevel = -1f;
 
-    public GameObject introMenuPanel;
-    public GameObject timeMenuPanel;
-    public GameObject scoreMenuPanel;
+    public GameObject introMenuPanel; //Top Menu Panel
+    public GameObject timeMenuPanel;  //Menu Panel for timed games
+    public GameObject scoreMenuPanel; //Menu Panel for scored games
 
-    bool isTimeDefault;
+    public GameObject timeCounterPanel;
+
     bool isGamePlaying;
 
     DataController data;
@@ -19,79 +20,43 @@ public class LevelManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        isGamePlaying = false;
         score = FindObjectOfType<ScoreKeeper>();
         data = FindObjectOfType<DataController>();
         timeToNextLevel = data.roundData.timeLimitInSeconds;
-        checkIsTimeDefault();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        
-        //if (isGamePlaying) {
-        //    print("-----------------round started");
-            if (data.roundData.isTimeBased) {
-                print("time based");
+        if (data != null)
+        {
+            if (data.roundData.isTimeBased)
+            {
                 timeToNextLevel -= Time.deltaTime;
                 if (timeToNextLevel <= 0)
-                {
-                    data.roundData.isStarted = false;
-                    isGamePlaying = false;
-                    LoadNextScene();                    
-                }
-            }
-            else {
-                print("score based");
-                timeToNextLevel += Time.deltaTime;
-                if (score != null && score.score >= data.roundData.scoreLimit)
                 {
                     data.roundData.isStarted = false;
                     isGamePlaying = false;
                     LoadNextScene();
                 }
             }
-        //}
-        //else {
-        //    print("-----------------round NOT started");
-        //}
-
-        //ScoreKeeper score = FindObjectOfType<ScoreKeeper>();
-        //if (score != null && score.score >= 50) {
-        //    LoadNextScene();
-        //}
-        //else if (Input.GetKeyDown(KeyCode.Space)) {
-        //    LoadNextScene();
-        //}
-        //else if (Input.GetKeyDown(KeyCode.P)) {
-        //    //LoadScene("01_Menu");
-        //}
-        //else if (Input.GetKeyDown(KeyCode.Q)) {
-        //    QuitRequest();
-        //}
-
-        
-        //print("Time to next level: " + timeToNextLevel);
-        //if (!isTimeDefault) {
-        //    print("Time entered and ready to check...");
-        //    if (timeToNextLevel <= 0)
-        //    {
-        //        LoadNextScene();
-        //    }
-            
-        //}
-        //else {
-        //    print("Default time value.  Do nothing yet!!");
-        //}
+            else
+            {
+                timeToNextLevel += Time.deltaTime;
+                if (score != null && score.score >= data.roundData.scoreLimit)
+                {
+                    data.roundData.isStarted = false;
+                    data.roundData.timeElapsed = timeToNextLevel;
+                    isGamePlaying = false;
+                    LoadNextScene();
+                }
+            }
+        }
+        else
+        {
+            print("******************Please make sure you are starting from Scene 00_Persistent*******************");
+        }
 	}
-
-    void checkIsTimeDefault() {
-        if (timeToNextLevel == -1) {
-            isTimeDefault = true;
-        }
-        else {
-            isTimeDefault = false;
-        }
-    }
 
     public void LoadNextScene() {
         int currentIndex = SceneManager.GetActiveScene().buildIndex;
@@ -111,8 +76,8 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public void LoadMenuScene(string scene) {
-        SceneManager.LoadScene(scene);
+    public void LoadMainMenu() {
+        SceneManager.LoadScene("01_Menu");
     }
 
     public void LoadMenuSceneForTime() {
@@ -126,19 +91,24 @@ public class LevelManager : MonoBehaviour {
     }
 
     public void StartGameForTime(int limit) {
+        print("************START GAME FOR TIME*******************");
         data.roundData.isTimeBased = true;
         data.roundData.timeLimitInSeconds = limit;
+        LoadGameScene();
         timeMenuPanel.SetActive(false);
         introMenuPanel.SetActive(true);
-        LoadGameScene();
+        print("************END START GAME FOR TIME*******************");
     }
 
     public void StartGameForScore(int limit) {
+        print("************START GAME FOR SCORE*******************");
         data.roundData.isTimeBased = false;
         data.roundData.scoreLimit = limit;
+        timeToNextLevel = 0;
+        LoadGameScene();
         scoreMenuPanel.SetActive(false);
         introMenuPanel.SetActive(true);
-        LoadGameScene();
+        print("************END START GAME FOR TIME*******************");
     }
 
     private void LoadGameScene() {

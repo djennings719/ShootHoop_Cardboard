@@ -7,9 +7,12 @@ public class TimeRemainingScript : MonoBehaviour {
 
     LevelManager lm;
     Text timeText;
+    DataController data;
+    
 
     // Use this for initialization
     void Start () {
+        data = FindObjectOfType<DataController>();
         lm = FindObjectOfType<LevelManager>();
         timeText = GetComponent<Text>();
 	}
@@ -17,16 +20,19 @@ public class TimeRemainingScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        UpdateTimeText();
+        UpdateTimeText(data.roundData.isTimeBased);       
     }
 
-    void UpdateTimeText()
-    {        
-        timeText.text = "Time Remaining: " + lm.timeToNextLevel;
+    void UpdateTimeText(bool countDown)
+    {
+        if (countDown)
+        {
+            timeText.text = "Time Remaining: " + Utilities.FormatTime(lm.timeToNextLevel);
+        }
+        else {
+            timeText.text = "Time: " + Utilities.FormatTime(lm.timeToNextLevel);
+            print("************************" + Utilities.FormatTime(lm.timeToNextLevel) + "*****************************");
+        }
+        
     }
-
-    //private void OnRenderImage(RenderTexture source, RenderTexture destination)
-    //{
-    //    UpdateTimeText();
-    //}
 }

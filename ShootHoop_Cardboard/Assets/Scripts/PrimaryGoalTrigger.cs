@@ -8,7 +8,6 @@ public class PrimaryGoalTrigger : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Trigger entered: " + other);
         SecondaryGoalTrigger bottom = GetComponentInChildren<SecondaryGoalTrigger>();
         bottom.ExpectCollider(other, scoreValue);
     }

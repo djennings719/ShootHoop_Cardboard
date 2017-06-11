@@ -10,4 +10,5 @@ public class RoundData
     public bool isTimeBased;
     public bool isStarted;
     public int score;
+    public float timeElapsed;
 }
